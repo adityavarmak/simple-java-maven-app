@@ -40,7 +40,7 @@ pipeline {
                         [
                             artifactId: 'myapp',
                             classifier: '',
-                            file: 'my-app-1.0-SNAPSHOT.jar',
+                            file: 'target/my-app-1.0-SNAPSHOT.jar',
                             type: 'jar'
                         ]
                     ],
@@ -48,7 +48,7 @@ pipeline {
                     groupId: 'myapp',
                     nexusUrl: "${NEXUS_URL}",
                     nexusVersion: 'nexus3',
-                    protocol: 'https',
+                    protocol: 'http',
                     repository: "sample",
                     version: "${VERSION}"
 
