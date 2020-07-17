@@ -20,6 +20,22 @@ pipeline {
                 }
             }
         }
+        stage('Set Version') {
+            steps {
+                script {
+                    GIT_TAG = sh( script: "git describe --abbrev=0 --tags", returnStdout: true).trim()
+                    VERSION = sh( script: "git describe --tags --exact-match HEAD >/dev/null 2>&1 && echo RELEASE || echo SNAPSHOT", returnStdout: true).trim()
+                    GIT_BRANCHNAME = sh( script: "echo $GIT_BRANCH|sed \'s|origin/||g;s|/|_|g\'", returnStdout: true).trim()
+                    if (GIT_BRANCHNAME != 'master') {
+                        VERSION = GIT_BRANCHNAME + '.' + sh ( script: "echo $BUILD_ID", returnStdout: true).trim()
+                    } else if (VERSION == 'RELEASE') {
+                        VERSION = GIT_TAG
+                    } else if (VERSION == 'SNAPSHOT'){
+                        VERSION = GIT_TAG + "-NOT_RELEASE.${BUILD_ID}"
+                    }
+                    currentBuild.displayName = VERSION
+                }
+
 
 }
 }
