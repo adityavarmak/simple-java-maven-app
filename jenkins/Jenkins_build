@@ -35,6 +35,23 @@ pipeline {
                     }
                     currentBuild.displayName = VERSION
                 }
+            nexusArtifactUploader artifacts:
+                    [
+                        [
+                            artifactId: 'myapp',
+                            classifier: '',
+                            file: 'my-app-1.0-SNAPSHOT.jar',
+                            type: 'jar'
+                        ]
+                    ],
+                    credentialsId: "${NEXUS_CREDENTIALS_ID}",
+                    groupId: 'myapp',
+                    nexusUrl: "${NEXUS_URL}",
+                    nexusVersion: 'nexus3',
+                    protocol: 'https',
+                    repository: "sample",
+                    version: "${VERSION}"
+
 
 
 }
